@@ -257,15 +257,16 @@ final class AppState: ObservableObject {
         guard let window = mainWindow else { return }
 
         // The height floor follows the content: hiding the alpha slider
-        // removes a row, so the window gets shorter too.
-        let growHeight = minimumHeight + Self.shadingHeaderHeight
-        let restFloor = minimumHeight
+        // removes a row, and the shading strip adds its own band. The
+        // metrics already account for the strip, so the floor is just the
+        // minimum height for the current state.
+        let floor = minimumHeight
 
         if shadingActive {
             // Remember the height BEFORE the header appears.
             sizeBeforeShading = window.frame.size
             window.styleMask.remove(.resizable)
-            let height = max(window.frame.height, growHeight)
+            let height = max(window.frame.height, floor)
             setWindowHeight(window, height)
             window.contentMinSize = NSSize(width: 440, height: height)
             window.minSize = NSSize(width: 440, height: height)
@@ -275,21 +276,21 @@ final class AppState: ObservableObject {
             let previous = sizeBeforeShading
             sizeBeforeShading = nil
             window.styleMask.insert(.resizable)
-            window.contentMinSize = NSSize(width: 440, height: restFloor)
-            window.minSize = NSSize(width: 440, height: restFloor)
+            window.contentMinSize = NSSize(width: 440, height: floor)
+            window.minSize = NSSize(width: 440, height: floor)
             if let previous {
-                setWindowHeight(window, max(previous.height, restFloor))
+                setWindowHeight(window, max(previous.height, floor))
             }
         }
     }
 
     /// Re-applies the window's height floor after the content changed
     /// (e.g. the alpha slider was hidden). The window shrinks or grows to
-    /// the new minimum unless shading is active, in which case the header
-    /// height is added on top.
+    /// the new minimum. The metrics already include the shading strip's
+    /// band when it is showing.
     func updateMinimumHeight() {
         guard let window = mainWindow else { return }
-        let target = minimumHeight + (shadingActive ? Self.shadingHeaderHeight : 0)
+        let target = minimumHeight
         window.contentMinSize = NSSize(width: 440, height: target)
         window.minSize = NSSize(width: 440, height: target)
         // The controls have a fixed height, so any extra window height is
@@ -357,15 +358,25 @@ final class AppState: ObservableObject {
     // MARK: - Window sizing
 
     /// Height of the shading strip (tints / naturals / shades).
-    static let shadingHeaderHeight: CGFloat = 64
-
-    /// Smallest height the main window may take, based on the current
-    /// alpha-visibility setting.
-    var minimumHeight: CGFloat {
+    /// Total height the shading header adds to the window: the tint/shade
+    /// strip plus the air around it.
+    var shadingHeaderHeight: CGFloat {
         LayoutMetrics(
             showAlpha: showAlphaSlider,
-            showSeparator: showToolbarSeparator).minimumHeight
+            showSeparator: showToolbarSeparator).shadingHeaderHeight
     }
+
+    /// Layout metrics for the current window settings.
+    private var layoutMetrics: LayoutMetrics {
+        LayoutMetrics(
+            showAlpha: showAlphaSlider,
+            showSeparator: showToolbarSeparator,
+            showShading: shadingActive)
+    }
+
+    /// Smallest height the main window may take, based on the current
+    /// alpha-visibility and shading settings.
+    var minimumHeight: CGFloat { layoutMetrics.minimumHeight }
 
     var storedFrame: NSRect? {
         guard let pos = state.colorpicker.pos else {

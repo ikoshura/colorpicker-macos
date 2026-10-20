@@ -29,7 +29,8 @@ struct ColorpickerView: View {
     private var metrics: LayoutMetrics {
         LayoutMetrics(
             showAlpha: state.showAlphaSlider,
-            showSeparator: state.showToolbarSeparator)
+            showSeparator: state.showToolbarSeparator,
+            showShading: state.shadingActive)
     }
 
     var body: some View {
@@ -49,13 +50,6 @@ struct ColorpickerView: View {
                 Color.clear
             } else {
                 VStack(spacing: 0) {
-                    // No animation anywhere: the header is either here
-                    // at full height or not here at all, like the
-                    // original Electron app.
-                    if state.shadingActive {
-                        shadingHeader
-                            .frame(height: 64)
-                    }
                     Spacer(minLength: 0)
                     mainRow
                         .padding(.horizontal, metrics.horizontalPadding)
@@ -66,7 +60,15 @@ struct ColorpickerView: View {
                 }
                 // Starts below the toolbar row, which sits one layer above
                 // as a ZStack sibling — always inline with the traffic lights.
-                .padding(.top, metrics.topPadding)
+                .padding(.top, metrics.contentTop)
+            }
+
+            // The tint/shade strip runs edge to edge, directly under the
+            // toolbar band (flush against the separator when one is drawn).
+            if state.shadingActive {
+                shadingHeader
+                    .frame(height: metrics.shadingStripHeight)
+                    .offset(y: metrics.shadingStripTop)
             }
 
             toolsRow
@@ -371,7 +373,10 @@ struct ColorpickerView: View {
             shadingStrip(sets.naturals)
             shadingStrip(sets.shades)
         }
-        // Height is driven by the caller so it can animate.
+        // The strip runs edge to edge, so it needs no horizontal inset.
+        .padding(.horizontal, metrics.shadingSideInset)
+        .clipShape(RoundedRectangle(cornerRadius: 6, style: .continuous))
+        // Height is driven by the caller.
     }
 
     private func shadingStrip(_ hexes: [String]) -> some View {

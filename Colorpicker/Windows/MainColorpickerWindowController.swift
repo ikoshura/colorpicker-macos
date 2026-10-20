@@ -99,8 +99,9 @@ final class MainColorpickerWindowController: NSWindowController, NSWindowDelegat
     nonisolated func windowWillResize(_ window: NSWindow, to frameSize: NSSize) -> NSSize {
         // AppKit delegate callbacks always run on the main thread.
         MainActor.assumeIsolated {
+            // The metrics already include the shading strip's band when it
+            // is showing, so the floor is just the minimum height.
             let floor = AppState.shared.minimumHeight
-                + (AppState.shared.shadingActive ? AppState.shadingHeaderHeight : 0)
             return NSSize(
                 width: max(frameSize.width, 440),
                 height: max(frameSize.height, floor))

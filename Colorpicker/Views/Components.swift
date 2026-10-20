@@ -23,6 +23,9 @@ struct LayoutMetrics {
     /// Whether the hairline under the toolbar is drawn. It changes how
     /// much air sits between the toolbar band and the controls.
     let showSeparator: Bool
+    /// Whether the tint/shade strip is showing above the controls. It
+    /// changes the bottom padding of the control block.
+    var showShading: Bool = false
 
     /// Number of slider/field rows (RGB + optional alpha).
     var rowCount: Int { showAlpha ? 4 : 3 }
@@ -41,7 +44,13 @@ struct LayoutMetrics {
     /// little air is left between it and the controls. Without it there is
     /// no divider to space out from, so the controls move up and the view
     /// stays tight instead of showing a band of dead space.
+    ///
+    /// When the shading strip is showing it takes over that band: it runs
+    /// edge to edge, so it starts right under the toolbar — flush against
+    /// the separator when there is one. The strip carries the offset
+    /// itself, so the control block starts at zero.
     var topPadding: CGFloat {
+        if showShading { return 0 }
         let gap: CGFloat
         if showSeparator {
             gap = showAlpha ? 6 : 8
@@ -50,8 +59,33 @@ struct LayoutMetrics {
         }
         return toolbarHeight + gap
     }
-    /// Space below the controls.
-    var bottomPadding: CGFloat { showAlpha ? 6 : 6 }
+    /// Space below the controls. With the tint/shade strip showing the
+    /// window is exactly as tall as its content, so the footer under the
+    /// hex field is trimmed to keep the panel compact.
+    var bottomPadding: CGFloat { showShading ? 2 : (showAlpha ? 6 : 6) }
+
+    // MARK: - Shading header (tints / naturals / shades)
+
+    /// Height of the tint/shade strip itself.
+    var shadingStripHeight: CGFloat { 56 }
+    /// Air between the strip and the sliders below it.
+    var shadingGap: CGFloat { 4 }
+    /// Horizontal inset so the strip doesn't square off the window's
+    /// rounded corners. Zero: the strip runs edge to edge.
+    var shadingSideInset: CGFloat { 0 }
+    /// Where the strip starts. It sits directly under the toolbar band,
+    /// flush against the separator when one is drawn.
+    var shadingStripTop: CGFloat { toolbarHeight + (showSeparator ? 1 : 0) }
+    /// Distance from the top of the window to the top of the controls.
+    /// With the strip showing, the controls sit below it.
+    var contentTop: CGFloat {
+        showShading
+            ? shadingStripTop + shadingStripHeight + shadingGap
+            : topPadding
+    }
+    /// Total height the shading header adds to the window: the strip plus
+    /// the air around it.
+    var shadingHeaderHeight: CGFloat { shadingStripHeight + shadingGap }
     /// Horizontal padding around the whole control block.
     var horizontalPadding: CGFloat { 18 }
     /// Gap between the sliders and the value fields.
@@ -77,7 +111,7 @@ struct LayoutMetrics {
     }
 
     /// The smallest height the window may take.
-    var minimumHeight: CGFloat { topPadding + contentHeight + bottomPadding }
+    var minimumHeight: CGFloat { contentTop + contentHeight + bottomPadding }
 }
 
 // MARK: - Channel slider
