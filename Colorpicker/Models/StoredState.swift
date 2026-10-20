@@ -26,11 +26,19 @@ struct StoredState: Codable {
         var buttonsType: String
         var lastColor: String
         var history: [String]
-        var colorfullApp: Bool
+        /// Replaces the old `colorfullApp` flag (complementary traffic-light
+        /// tinting), which was removed. Decoding stays lenient so existing
+        /// storage files keep working.
+        var showAlphaSlider: Bool
+        /// Draws a hairline under the toolbar row, separating it from the
+        /// controls. Off by default.
+        var showToolbarSeparator: Bool
         var updateIgnore: String?
 
         enum CodingKeys: String, CodingKey {
-            case tools, size, pos, buttonsPosition, buttonsType, lastColor, history, colorfullApp
+            case tools, size, pos, buttonsPosition, buttonsType, lastColor, history
+            case showAlphaSlider
+            case showToolbarSeparator
             case updateIgnore = "update:ignore"
         }
     }
@@ -97,7 +105,8 @@ struct StoredState: Codable {
                 buttonsType: "osx",
                 lastColor: "#00AEEF",
                 history: [],
-                colorfullApp: false,
+                showAlphaSlider: false,
+                showToolbarSeparator: false,
                 updateIgnore: nil
             ),
             colorsbook: .init(colors: defaultColors),
@@ -138,7 +147,8 @@ extension StoredState.ColorpickerSection {
         lastColor = try container.decodeIfPresent(String.self, forKey: .lastColor)
             ?? defaults.lastColor
         history = try container.decodeIfPresent([String].self, forKey: .history) ?? []
-        colorfullApp = try container.decodeIfPresent(Bool.self, forKey: .colorfullApp) ?? false
+        showAlphaSlider = try container.decodeIfPresent(Bool.self, forKey: .showAlphaSlider) ?? false
+        showToolbarSeparator = try container.decodeIfPresent(Bool.self, forKey: .showToolbarSeparator) ?? false
         updateIgnore = try container.decodeIfPresent(String.self, forKey: .updateIgnore)
     }
 }

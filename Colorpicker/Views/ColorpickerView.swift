@@ -17,11 +17,18 @@ struct ColorpickerView: View {
     @State private var greenText = "0"
     @State private var blueText = "0"
     @State private var alphaText = "1.00"
+    /// Flashes a checkmark for a moment after a successful copy.
+    @State private var didCopy = false
 
     @FocusState private var focusedField: Field?
     enum Field: Hashable { case hex, red, green, blue, alpha }
 
     private var fg: Color { state.color.foreground }
+
+    /// Layout metrics for the current alpha-visibility setting.
+    private var metrics: LayoutMetrics {
+        LayoutMetrics(showAlpha: state.showAlphaSlider)
+    }
 
     var body: some View {
         ZStack(alignment: .top) {
@@ -30,6 +37,10 @@ struct ColorpickerView: View {
                 // Honor the window's rounded corners even while the frame is
                 // being animated, so the fill never bleeds square past the mask.
                 .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
+                // Clicking anywhere on the background drops the text cursor,
+                // so the focused field can always be dismissed. The controls
+                // sit above this layer and keep their own hit-testing.
+                .onTapGesture { dismissFieldFocus() }
 
             if state.focusMode {
                 // Focus mode hides everything but the color itself.
@@ -45,26 +56,33 @@ struct ColorpickerView: View {
                     }
                     Spacer(minLength: 0)
                     mainRow
-                        .padding(.horizontal, 14)
-                        .padding(.bottom, 6)
+                        .padding(.horizontal, metrics.horizontalPadding)
+                        .padding(.bottom, metrics.bottomPadding)
                     // Any extra window height is shared above and below the
                     // controls so they stay near the toolbar.
                     Spacer(minLength: 0)
                 }
                 // Starts below the toolbar row, which sits one layer above
                 // as a ZStack sibling — always inline with the traffic lights.
-                .padding(.top, 34)
+                .padding(.top, metrics.topPadding)
             }
 
             toolsRow
+
+            // An optional hairline that separates the toolbar band from
+            // the controls.
+            if state.showToolbarSeparator {
+                toolbarSeparator
+            }
         }
-        // Exact fit — the window sits at exactly these heights:
-        //   shading on : 34 (toolbar) + 64 (header) + 12 (gap) + 106 + 4 = 220
-        //   shading off: 34 + 0 + 12 + 106 + 4 = 156
+        // Exact fit — the window sizes itself to the content:
+        //   toolbar row + (optional) shading header + controls + padding.
         // Toggles are instant (no animation). The window only ever GROWS to
         // fit the header; it never shrinks. While shaded its height is
         // locked; the width stays freely resizable at all times.
-        .frame(minWidth: 440, minHeight: 150)
+        .frame(minWidth: 440, minHeight: metrics.minimumHeight)
+        // The caret and the selection highlight follow the current color.
+        .tint(state.color.accent)
         // The titlebar is transparent + full-size content: position everything
         // from the real window top so the tools row can sit inline with the
         // system traffic lights.
@@ -78,6 +96,17 @@ struct ColorpickerView: View {
             }
         }
         .contextMenu { contextMenu }
+        // Escape also leaves the focused field.
+        .onExitCommand { dismissFieldFocus() }
+    }
+
+    /// Removes the text cursor from whichever field has it and re-syncs
+    /// every field with the current color, so a half-typed value is
+    /// resolved instead of being left dangling.
+    private func dismissFieldFocus() {
+        guard focusedField != nil else { return }
+        focusedField = nil
+        syncTexts(from: state.color)
     }
 
     // MARK: - Field syncing & parsing (port of the oninput handlers)
@@ -152,63 +181,110 @@ struct ColorpickerView: View {
             set: { state.setAlpha($0 / 255) })
     }
 
+    /// The hairline drawn under the toolbar row. It uses the same
+    /// color-derived foreground as the rest of the UI, so it stays
+    /// consistent in both light and dark mode.
+    private var toolbarSeparator: some View {
+        Rectangle()
+            .fill(fg.opacity(0.18))
+            .frame(height: 1)
+            .frame(maxWidth: .infinity)
+            .offset(y: metrics.toolbarHeight)
+            .allowsHitTesting(false)
+    }
+
     // MARK: - Main row (sliders + fields + hex)
 
     /// OG-style single row: wide, flexible sliders, then the number fields,
     /// then the hex field inline on the last row — no dead space on the right.
     private var mainRow: some View {
         HStack(alignment: .bottom, spacing: 10) {
-            VStack(alignment: .leading, spacing: 6) {
+            VStack(alignment: .leading, spacing: metrics.rowSpacing) {
                 ColorChannelSlider(
                     value: channelBinding(0),
                     fill: Color(nsColor: NSColor(srgbRed: 1.0, green: 87 / 255, blue: 57 / 255, alpha: 1)),
-                    isDark: state.color.isDark)
+                    track: state.color.sliderTrack,
+                    thumb: state.color.thumbFill,
+                    thumbSize: metrics.thumbSize,
+                    trackHeight: metrics.trackHeight)
                 ColorChannelSlider(
                     value: channelBinding(1),
                     fill: Color(nsColor: NSColor(srgbRed: 105 / 255, green: 195 / 255, blue: 59 / 255, alpha: 1)),
-                    isDark: state.color.isDark)
+                    track: state.color.sliderTrack,
+                    thumb: state.color.thumbFill,
+                    thumbSize: metrics.thumbSize,
+                    trackHeight: metrics.trackHeight)
                 ColorChannelSlider(
                     value: channelBinding(2),
                     fill: Color(nsColor: NSColor(srgbRed: 65 / 255, green: 165 / 255, blue: 225 / 255, alpha: 1)),
-                    isDark: state.color.isDark)
-                ColorChannelSlider(
-                    value: alphaBinding,
-                    fill: Color.black.opacity(0.5),
-                    isDark: state.color.isDark)
+                    track: state.color.sliderTrack,
+                    thumb: state.color.thumbFill,
+                    thumbSize: metrics.thumbSize,
+                    trackHeight: metrics.trackHeight)
+                if state.showAlphaSlider {
+                    ColorChannelSlider(
+                        value: alphaBinding,
+                        fill: state.color.alphaTrack,
+                        track: state.color.sliderTrack,
+                        thumb: state.color.thumbFill,
+                        thumbSize: metrics.thumbSize,
+                        trackHeight: metrics.trackHeight)
+                }
             }
             // Sliders take whatever room is left, like the original.
             .frame(maxWidth: .infinity)
 
-            VStack(alignment: .trailing, spacing: 6) {
-                styledField($redText, field: .red, width: 42)
+            // A clear gap separates the sliders from the value fields.
+            .padding(.trailing, metrics.sliderFieldSpacing)
+
+            VStack(alignment: .trailing, spacing: metrics.rowSpacing) {
+                styledField($redText, field: .red, width: metrics.fieldWidth, fontSize: metrics.fieldFontSize)
                     .onChange(of: redText) { _, value in
                         let filtered = String(value.filter { $0.isNumber }.prefix(3))
                         if filtered != value { redText = filtered }
                         parseChannel(filtered, channel: 0)
                     }
-                styledField($greenText, field: .green, width: 42)
+                styledField($greenText, field: .green, width: metrics.fieldWidth, fontSize: metrics.fieldFontSize)
                     .onChange(of: greenText) { _, value in
                         let filtered = String(value.filter { $0.isNumber }.prefix(3))
                         if filtered != value { greenText = filtered }
                         parseChannel(filtered, channel: 1)
                     }
-                styledField($blueText, field: .blue, width: 42)
+                styledField($blueText, field: .blue, width: metrics.fieldWidth, fontSize: metrics.fieldFontSize)
                     .onChange(of: blueText) { _, value in
                         let filtered = String(value.filter { $0.isNumber }.prefix(3))
                         if filtered != value { blueText = filtered }
                         parseChannel(filtered, channel: 2)
                     }
-                styledField($alphaText, field: .alpha, width: 42)
-                    .onChange(of: alphaText) { _, value in
-                        parseAlpha(value)
-                    }
-                    .onSubmit {
-                        focusedField = nil
-                        alphaText = String(format: "%.2f", state.color.alpha)
-                    }
+                if state.showAlphaSlider {
+                    styledField($alphaText, field: .alpha, width: metrics.fieldWidth, fontSize: metrics.fieldFontSize)
+                        .onChange(of: alphaText) { _, value in
+                            parseAlpha(value)
+                        }
+                        .onSubmit {
+                            focusedField = nil
+                            alphaText = String(format: "%.2f", state.color.alpha)
+                        }
+                }
             }
 
-            styledField($hexText, field: .hex, width: 100, fontSize: 14)
+            hexField
+                .padding(.leading, metrics.fieldHexSpacing)
+        }
+    }
+
+    /// Hex entry and the copy action share one capsule: the field takes
+    /// most of the width, the copy button sits in the right-hand end
+    /// separated by a hairline divider.
+    private var hexField: some View {
+        HStack(spacing: 0) {
+            TextField("", text: $hexText)
+                .textFieldStyle(.plain)
+                .multilineTextAlignment(.center)
+                .font(.system(size: metrics.hexFontSize, weight: .semibold))
+                .foregroundStyle(fg)
+                .focused($focusedField, equals: .hex)
+                .frame(maxWidth: .infinity)
                 .onChange(of: hexText) { _, value in
                     let body = value.filter { $0 != "#" }
                     let filtered = "#" + String(body.uppercased().prefix(6))
@@ -224,23 +300,64 @@ struct ColorpickerView: View {
                     adjustAllChannels(by: -1)
                     return .handled
                 }
+
+            Rectangle()
+                .fill(fg.opacity(0.25))
+                .frame(width: 1, height: 12)
+
+            Button {
+                state.copyHex()
+                flashCopied()
+            } label: {
+                Image(systemName: didCopy ? "checkmark" : "doc.on.doc.fill")
+                    .font(.system(size: 11, weight: .semibold))
+                    .foregroundStyle(fg)
+                    .frame(width: 22, height: metrics.rowHeight)
+                    .contentShape(Rectangle())
+            }
+            .buttonStyle(.plain)
+            .help("Copy hex code")
+        }
+        .frame(width: metrics.hexWidth, height: metrics.rowHeight)
+        .background(
+            Capsule().fill(state.color.fieldFill))
+        .contextMenu { copyMenu }
+    }
+
+    /// Copy actions shared by the copy button and the hex field.
+    private var copyMenu: some View {
+        Group {
+            Button("Copy Hex Code") {
+                state.copyHex()
+                flashCopied()
+            }
+            Button("Copy RGB Code") { state.copyRGB() }
+            Button("Copy RGBA Code") { state.copyRGBA() }
+        }
+    }
+
+    /// Briefly swaps the copy icon for a checkmark.
+    private func flashCopied() {
+        didCopy = true
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.2) {
+            didCopy = false
         }
     }
 
     private func styledField(
-        _ text: Binding<String>, field: Field, width: CGFloat, fontSize: CGFloat = 12
+        _ text: Binding<String>, field: Field, width: CGFloat,
+        fontSize: CGFloat? = nil
     ) -> some View {
         TextField("", text: text)
             .textFieldStyle(.plain)
             .multilineTextAlignment(.center)
             // Same weight as the hex field so every number reads the same.
-            .font(.system(size: fontSize, weight: .semibold))
+            .font(.system(size: fontSize ?? metrics.fieldFontSize, weight: .semibold))
             .foregroundStyle(fg)
             .focused($focusedField, equals: field)
-            .frame(width: width, height: 22)
+            .frame(width: width, height: metrics.rowHeight)
             .background(
-                Capsule().fill(
-                    Color.white.opacity(state.color.isDark ? 0.18 : 0.3)))
+                Capsule().fill(state.color.fieldFill))
     }
 
     // MARK: - Shading header (tints / naturals / shades)

@@ -3,3 +3,7 @@ DerivedData/
 *.xcuserstate
 xcuserdata/
 .DS_Store
+
+# Zola
+website/public/
+website/.sass-cache/

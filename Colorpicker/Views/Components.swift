@@ -8,14 +8,79 @@
 
 import SwiftUI
 
+// MARK: - Layout metrics
+
+/// Vertical metrics for the main window.
+///
+/// The window has two density profiles:
+///
+/// - With the alpha slider visible there are four rows of controls, so
+///   the layout stays compact to keep the panel short.
+/// - Without it there are only three rows, and the layout relaxes into
+///   the roomier, more comfortable spacing of the original app.
+struct LayoutMetrics {
+    let showAlpha: Bool
+
+    /// Number of slider/field rows (RGB + optional alpha).
+    var rowCount: Int { showAlpha ? 4 : 3 }
+    /// Height of a single slider or value field. The slider thumb is a
+    /// circle that is taller than the track, so the row is sized to it.
+    var rowHeight: CGFloat { showAlpha ? 20 : 24 }
+    /// Vertical gap between rows.
+    var rowSpacing: CGFloat { showAlpha ? 5 : 9 }
+    /// Height of the toolbar band: the system traffic lights and the tool
+    /// buttons sit inline in it.
+    var toolbarHeight: CGFloat { 32 }
+    /// Space reserved above the controls for the toolbar row. It clears the
+    /// toolbar band and leaves a little air below it.
+    var topPadding: CGFloat { toolbarHeight + (showAlpha ? 2 : 6) }
+    /// Space below the controls.
+    var bottomPadding: CGFloat { showAlpha ? 6 : 6 }
+    /// Horizontal padding around the whole control block.
+    var horizontalPadding: CGFloat { 18 }
+    /// Gap between the sliders and the value fields.
+    var sliderFieldSpacing: CGFloat { showAlpha ? 10 : 16 }
+    /// Gap between the value fields and the hex field.
+    var fieldHexSpacing: CGFloat { showAlpha ? 10 : 12 }
+    /// Width of a numeric value field.
+    var fieldWidth: CGFloat { showAlpha ? 44 : 52 }
+    /// Font size of the numeric value fields.
+    var fieldFontSize: CGFloat { showAlpha ? 12 : 14 }
+    /// Width of the hex field + copy button.
+    var hexWidth: CGFloat { showAlpha ? 104 : 118 }
+    /// Font size of the hex text.
+    var hexFontSize: CGFloat { showAlpha ? 13 : 15 }
+    /// Diameter of the slider thumb circle.
+    var thumbSize: CGFloat { showAlpha ? 20 : 24 }
+    /// Height of the rounded slider track.
+    var trackHeight: CGFloat { 10 }
+
+    /// Height of the controls block on its own.
+    var contentHeight: CGFloat {
+        CGFloat(rowCount) * rowHeight + CGFloat(rowCount - 1) * rowSpacing
+    }
+
+    /// The smallest height the window may take.
+    var minimumHeight: CGFloat { topPadding + contentHeight + bottomPadding }
+}
+
 // MARK: - Channel slider
 
 /// Custom slider matching the original track/thumb styling:
 /// 10px rounded track, colored fill, 22px white thumb.
 struct ColorChannelSlider: View {
     @Binding var value: Double
+    /// The colored portion of the track (the channel's own color).
     var fill: Color
-    var isDark: Bool
+    /// The unfilled portion of the track, tinted towards the background.
+    var track: Color
+    /// The thumb color, tinted so it never glares.
+    var thumb: Color
+    /// Thumb diameter; the row height follows it.
+    var thumbSize: CGFloat = 20
+    /// Height of the rounded track. The thumb is a bigger circle that
+    /// sits on top of it.
+    var trackHeight: CGFloat = 10
 
     var body: some View {
         GeometryReader { geometry in
@@ -25,23 +90,23 @@ struct ColorChannelSlider: View {
 
             ZStack(alignment: .leading) {
                 Capsule()
-                    .fill(isDark ? Color.white.opacity(0.6) : Color.black.opacity(0.35))
-                    .frame(height: 10)
+                    .fill(track)
+                    .frame(height: trackHeight)
                 Capsule()
                     .fill(fill)
-                    .frame(width: max(10, fraction * width), height: 10)
+                    .frame(width: max(trackHeight, fraction * width), height: trackHeight)
                 Circle()
-                    .fill(.white)
-                    .frame(width: 22, height: 22)
+                    .fill(thumb)
+                    .frame(width: thumbSize, height: thumbSize)
                     .shadow(color: .black.opacity(0.25), radius: 1, y: 1)
                     .overlay(
                         Capsule()
                             .fill(Color(hex: "#F3F3F3"))
-                            .frame(width: 14, height: 2)
-                            .offset(y: 9)
+                            .frame(width: thumbSize * 0.64, height: 2)
+                            .offset(y: thumbSize * 0.41)
                             .clipShape(Circle())
                     )
-                    .offset(x: min(max(fraction * width - 11, 0), max(0, width - 22)))
+                    .offset(x: min(max(fraction * width - thumbSize / 2, 0), max(0, width - thumbSize)))
             }
             .contentShape(Rectangle())
             .gesture(
@@ -52,7 +117,7 @@ struct ColorChannelSlider: View {
                     }
             )
         }
-        .frame(height: 22)
+        .frame(height: thumbSize)
     }
 }
 
@@ -65,14 +130,14 @@ struct ToolItem: Identifiable, Hashable {
 
     /// Same catalogue as `allTools` in colorpicker.events.js.
     static let all: [ToolItem] = [
-        ToolItem(id: "top", title: "Pin to Foreground", icon: "pin"),
-        ToolItem(id: "picker", title: "Pick Color", icon: "eyedropper"),
-        ToolItem(id: "tags", title: "Open Colorsbook", icon: "book"),
-        ToolItem(id: "shade", title: "Toggle Shading", icon: "drop"),
-        ToolItem(id: "random", title: "Set Random Color", icon: "dice"),
+        ToolItem(id: "top", title: "Pin to Foreground", icon: "pin.fill"),
+        ToolItem(id: "picker", title: "Pick Color", icon: "eyedropper.halffull"),
+        ToolItem(id: "tags", title: "Open Colorsbook", icon: "book.fill"),
+        ToolItem(id: "shade", title: "Toggle Shading", icon: "drop.fill"),
+        ToolItem(id: "random", title: "Set Random Color", icon: "dice.fill"),
         ToolItem(id: "clean", title: "Focus Mode", icon: "circle.lefthalf.filled"),
-        ToolItem(id: "apply", title: "Get Clipboard's Colors", icon: "doc.on.clipboard"),
-        ToolItem(id: "settings", title: "Open Settings", icon: "gearshape"),
+        ToolItem(id: "apply", title: "Get Clipboard's Colors", icon: "doc.on.clipboard.fill"),
+        ToolItem(id: "settings", title: "Open Settings", icon: "gearshape.fill"),
     ]
 
     static func named(_ id: String) -> ToolItem? {

@@ -15,7 +15,16 @@ import SwiftUI
 final class AppState: ObservableObject {
     static let shared = AppState()
 
-    @Published var color: AppColor
+    @Published var color: AppColor {
+        didSet {
+            updateShadingConstraintsIfNeeded()
+            syncAccentColor()
+        }
+    }
+    /// The accent color used for the text caret and the selection
+    /// highlight. It follows the current color, so AppKit has to be told
+    /// when it changes.
+    @Published private(set) var accentColor: NSColor = .controlAccentColor
     @Published private(set) var history: [String]
     @Published var shadingActive = false {
         didSet { updateShadingConstraintsIfNeeded() }
@@ -27,8 +36,22 @@ final class AppState: ObservableObject {
 
     // Settings (colorpicker section)
     @Published var tools: [String]
-    @Published var colorfullApp: Bool {
-        didSet { persistSoon() }
+    /// When false the alpha slider and the alpha value field are hidden in
+    /// the main window. Persisted so the choice survives a relaunch.
+    @Published var showAlphaSlider: Bool {
+        didSet {
+            guard showAlphaSlider != oldValue else { return }
+            persistSoon()
+            updateMinimumHeight()
+        }
+    }
+    /// When true a hairline is drawn under the toolbar row, separating it
+    /// from the controls. Off by default.
+    @Published var showToolbarSeparator: Bool {
+        didSet {
+            guard showToolbarSeparator != oldValue else { return }
+            persistSoon()
+        }
     }
     // Settings (picker section)
     @Published var pickerRealtime: Bool {
@@ -62,15 +85,23 @@ final class AppState: ObservableObject {
         color = AppColor(hex: loaded.colorpicker.lastColor)
         history = Array(loaded.colorpicker.history.prefix(10))
         tools = loaded.colorpicker.tools
-        colorfullApp = loaded.colorpicker.colorfullApp
+        showAlphaSlider = loaded.colorpicker.showAlphaSlider
+        showToolbarSeparator = loaded.colorpicker.showToolbarSeparator
         pickerRealtime = loaded.picker.realtime
         categories = loaded.colorsbook.colors.map { Category(name: $0.key, colors: $0.value) }
         if categories.isEmpty {
             categories = StoredState.defaultColors.map { Category(name: $0.key, colors: $0.value) }
         }
+        syncAccentColor()
     }
 
     // MARK: - Color actions (port of Colorpicker class + events)
+
+    /// Pushes the color-derived accent into AppKit, so the text caret and
+    /// the selection highlight follow the current color.
+    private func syncAccentColor() {
+        accentColor = color.accentNSColor
+    }
 
     /// Port of `setNewColor(hex, dontSaveIt)`.
     func setColor(hex: String, persist: Bool = true) {
@@ -222,8 +253,10 @@ final class AppState: ObservableObject {
     func updateShadingConstraintsIfNeeded() {
         guard let window = mainWindow else { return }
 
-        let growHeight: CGFloat = 220
-        let restFloor: CGFloat = 150
+        // The height floor follows the content: hiding the alpha slider
+        // removes a row, so the window gets shorter too.
+        let growHeight = minimumHeight + Self.shadingHeaderHeight
+        let restFloor = minimumHeight
 
         if shadingActive {
             // Remember the height BEFORE the header appears.
@@ -245,6 +278,20 @@ final class AppState: ObservableObject {
                 setWindowHeight(window, max(previous.height, restFloor))
             }
         }
+    }
+
+    /// Re-applies the window's height floor after the content changed
+    /// (e.g. the alpha slider was hidden). The window shrinks or grows to
+    /// the new minimum unless shading is active, in which case the header
+    /// height is added on top.
+    func updateMinimumHeight() {
+        guard let window = mainWindow else { return }
+        let target = minimumHeight + (shadingActive ? Self.shadingHeaderHeight : 0)
+        window.contentMinSize = NSSize(width: 440, height: target)
+        window.minSize = NSSize(width: 440, height: target)
+        // The controls have a fixed height, so any extra window height is
+        // just empty space — pull the window back to a snug fit.
+        setWindowHeight(window, target)
     }
 
     /// Sets the window's height while keeping the top edge fixed.
@@ -269,7 +316,8 @@ final class AppState: ObservableObject {
         persistTimer?.invalidate()
         persistTimer = nil
         state.colorpicker.tools = tools
-        state.colorpicker.colorfullApp = colorfullApp
+        state.colorpicker.showAlphaSlider = showAlphaSlider
+        state.colorpicker.showToolbarSeparator = showToolbarSeparator
         state.colorpicker.lastColor = color.hex
         state.colorpicker.history = history
         state.picker.realtime = pickerRealtime
@@ -301,6 +349,17 @@ final class AppState: ObservableObject {
         }
         guard body.count == 6, body.allSatisfy({ $0.isHexDigit }) else { return color.hex }
         return "#" + body.uppercased()
+    }
+
+    // MARK: - Window sizing
+
+    /// Height of the shading strip (tints / naturals / shades).
+    static let shadingHeaderHeight: CGFloat = 64
+
+    /// Smallest height the main window may take, based on the current
+    /// alpha-visibility setting.
+    var minimumHeight: CGFloat {
+        LayoutMetrics(showAlpha: showAlphaSlider).minimumHeight
     }
 
     var storedFrame: NSRect? {

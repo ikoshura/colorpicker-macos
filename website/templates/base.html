@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{% block title %}{{ config.title }}{% endblock title %}</title>
+  <meta name="description" content="{% block description %}{{ config.description }}{% endblock description %}" />
+  <link rel="stylesheet" href="{{ get_url(path='style.css') }}" />
+  {% if config.extra.favicon %}<link rel="icon" href="{{ get_url(path=config.extra.favicon) }}" />{% endif %}
+</head>
+<body>
+  <div class="wrap">
+    <header class="site-header">
+      <a class="brand" href="{{ get_url(path='') }}">
+        <span class="swatch"></span>
+        <span>Colorpicker</span>
+      </a>
+      <nav>
+        {% for item in config.extra.nav %}
+          {% if item.external %}
+            <a href="{{ item.url }}" rel="noopener">{{ item.text }}</a>
+          {% else %}
+            <a href="{{ get_url(path=item.url) }}">{{ item.text }}</a>
+          {% endif %}
+        {% endfor %}
+      </nav>
+    </header>
+
+    <main>
+      {% block content %}{% endblock content %}
+    </main>
+
+    <footer class="site-footer">
+      <p>
+        Colorpicker is originally developed by
+        <a href="https://github.com/toinane/colorpicker" rel="noopener">Toinane</a>.
+        The native macOS app is ported and maintained by
+        <a href="https://github.com/ikoshura" rel="noopener">ikoshura</a>.
+      </p>
+      <p>
+        <a href="https://github.com/ikoshura/colorpicker-macos" rel="noopener">Source</a>
+        &middot;
+        <a href="https://github.com/ikoshura/colorpicker-macos/releases" rel="noopener">Releases</a>
+        &middot;
+        <a href="https://github.com/ikoshura/colorpicker-macos/issues" rel="noopener">Issues</a>
+      </p>
+    </footer>
+  </div>
+</body>
+</html>

@@ -1,0 +1,28 @@
+# Zola configuration for the Colorpicker (macOS) website.
+#
+# The site is deployed to GitHub Pages from the `gh-pages` branch of the
+# repository: https://ikoshura.github.io/colorpicker-macos/
+
+base_url = "https://ikoshura.github.io/colorpicker-macos"
+title = "Colorpicker for macOS"
+description = "A native macOS color picker written in Swift and AppKit."
+author = "Abrar Zha (ikoshura)"
+compile_sass = true
+generate_feeds = false
+
+[extra]
+favicon = "favicon.svg"
+
+[[extra.nav]]
+text = "Home"
+url = ""
+
+[[extra.nav]]
+text = "Releases"
+url = "https://github.com/ikoshura/colorpicker-macos/releases"
+external = true
+
+[[extra.nav]]
+text = "Source"
+url = "https://github.com/ikoshura/colorpicker-macos"
+external = true

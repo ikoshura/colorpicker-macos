@@ -1,0 +1,15 @@
+@use "variables" as *;
+
+// Highlighted code blocks.
+pre {
+  background: $bg-soft;
+  border: 1px solid $border;
+  border-radius: $radius;
+  padding: 1rem 1.25rem;
+  overflow-x: auto;
+}
+
+code {
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
+  font-size: 0.875rem;
+}

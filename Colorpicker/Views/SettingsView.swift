@@ -142,11 +142,23 @@ struct SettingsView: View {
 
     // MARK: - Colorpicker
 
+    /// The toggle is phrased "Hide Alpha Slider", so it is the inverse of
+    /// the stored `showAlphaSlider` flag.
+    private var hideAlphaSliderBinding: Binding<Bool> {
+        Binding(
+            get: { !state.showAlphaSlider },
+            set: { hidden in state.showAlphaSlider = !hidden })
+    }
+
     private var colorpickerPanel: some View {
         VStack(alignment: .leading, spacing: 8) {
             Text("Appearance").font(.headline)
-            Toggle("Show complementary colors in OSX Icons", isOn: $state.colorfullApp)
-            Text("Tints the close, minimize and zoom buttons with colors complementary to the current color.")
+            Toggle("Hide Alpha Slider", isOn: hideAlphaSliderBinding)
+            Text("Hides the alpha slider and its value in the colorpicker window.")
+                .font(.caption)
+                .foregroundStyle(.secondary)
+            Toggle("Show Toolbar Separator", isOn: $state.showToolbarSeparator)
+            Text("Draws a thin line under the toolbar, separating it from the sliders.")
                 .font(.caption)
                 .foregroundStyle(.secondary)
             Spacer(minLength: 0)
@@ -208,8 +220,7 @@ struct SettingsView: View {
                     Image(systemName: "exclamationtriangle").foregroundStyle(.orange)
                     Text("New update available (\(state.latest))")
                     Button("Show Update") {
-                        NSWorkspace.shared.open(URL(
-                            string: "https://github.com/Toinane/colorpicker/releases")!)
+                        NSWorkspace.shared.open(UpdateChecker.releasesURL)
                     }
                 } else {
                     Image(systemName: "checkmark.circle").foregroundStyle(.green)
@@ -223,13 +234,24 @@ struct SettingsView: View {
             Text("About").font(.headline)
             Text("Colorpicker - version \(UpdateChecker.currentVersion)")
             Text("-")
-            HStack(spacing: 4) {
-                Text("Colorpicker is developed by Toinane with")
-                Image(systemName: "heart.fill")
-                    .foregroundStyle(.red)
+
+            VStack(alignment: .leading, spacing: 2) {
+                HStack(spacing: 5) {
+                    Text("Originally developed by Toinane with")
+                    Image(systemName: "heart.fill")
+                        .foregroundStyle(.red)
+                }
+                Text("Ported to native macOS by ikoshura.")
             }
-            Button("Website") {
-                NSWorkspace.shared.open(URL(string: "https://colorpicker.fr")!)
+            .font(.callout)
+
+            HStack(spacing: 8) {
+                Button("Website") {
+                    NSWorkspace.shared.open(URL(string: "https://ikoshura.github.io/colorpicker-macos")!)
+                }
+                Button("GitHub") {
+                    NSWorkspace.shared.open(URL(string: "https://github.com/ikoshura/colorpicker-macos")!)
+                }
             }
             .controlSize(.small)
             Spacer(minLength: 0)

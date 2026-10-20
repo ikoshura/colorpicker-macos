@@ -201,12 +201,6 @@ enum ColorTools {
         ColorTools.hex(from: natural(percent, from: rgb(fromHex: hex)))
     }
 
-    // Complementary colors used for the "colorfull app" traffic lights
-
-    static func redComplementary(_ rgb: RGB) -> RGB { (rgb.r, rgb.b, rgb.g) }
-    static func greenComplementary(_ rgb: RGB) -> RGB { (rgb.b, rgb.g, rgb.r) }
-    static func blueComplementary(_ rgb: RGB) -> RGB { (rgb.g, rgb.r, rgb.b) }
-
     // MARK: - Brightness
 
     /// Port of `isDarkColor` — weighted luminance, dark when <= 140.
