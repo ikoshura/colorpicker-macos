@@ -1,111 +1,56 @@
-# Colorpicker — Native macOS (Swift)
+# Colorpicker for macOS
 
-A native Swift/AppKit+SwiftUI rewrite of the Electron [Colorpicker](https://github.com/toinane/colorpicker) app.
-No Electron, no Node, no robotjs — a single ~.app bundle of a few hundred KB.
+<img src="https://github.com/user-attachments/assets/69456df7-fc1c-4bbe-a745-fab9e63884e5" width="320" alt="Colorpicker screenshot" />
 
-- **Website**: <https://ikoshura.github.io/colorpicker-macos> (source in [`website/`](website), built with [Zola](https://www.getzola.org))
-- **Original app by [Toinane](https://github.com/toinane)** — the native macOS port is by [ikoshura](https://github.com/ikoshura).
+A small, native macOS color picker. It's a Swift rewrite of the Electron app [Colorpicker](https://github.com/toinane/colorpicker) by [Toinane](https://github.com/toinane), with no Electron or Node, just a tiny `.app`.
 
-## Build
+Website: <https://ikoshura.github.io/colorpicker-macos>
+
+## Features
+
+- Pick any color on screen with `⌘P`
+- Adjust color with RGBA sliders, number fields, or a hex field
+- Copy as hex, RGB, or RGBA
+- Tints, naturals, and shades of the current color
+- Colorsbook to save colors in categories
+- Color history, window position, and settings are remembered
+- Pin the window on top, focus mode, random color, read colors from the clipboard
+- Imports your data from the Electron version on first launch
+
+## Requirements
+
+- macOS 14 or later
+- Xcode 15.2 or later (to build)
+
+## Install / Build
 
 ```bash
 brew install xcodegen   # once
-./build.sh              # generates Colorpicker.xcodeproj and builds
+./build.sh
 open build/Build/Products/Release/Colorpicker.app
 ```
 
-Or open `Colorpicker.xcodeproj` in Xcode and hit Run.
+You can also open `Colorpicker.xcodeproj` in Xcode and press Run.
 
-Requires macOS 14+ to run (Xcode 15.2+ to build).
+On first use, the picker asks for **Screen Recording** permission. Enable it in System Settings → Privacy & Security → Screen Recording.
+
+## Differences from the Electron version
+
+- Uses native macOS window controls
+- "Get Clipboard's Colors" now works (it was never finished in the original)
+- Touch Bar support isn't included
 
 ## Website
 
-The project website lives in [`website/`](website) and is built with [Zola](https://www.getzola.org).
+The site lives in [`website/`](website) and is built with [Zola](https://www.getzola.org):
 
 ```bash
-brew install zola        # once
-cd website && zola build # output in website/public
+brew install zola
+cd website && zola build
 ```
 
-It is deployed automatically to GitHub Pages by
-`.github/workflows/deploy-website.yml` on every push to `main` that touches
-`website/`.
+It deploys to GitHub Pages automatically when `website/` changes on `main`.
 
-## What's implemented (feature parity with the Electron app)
+## Credits
 
-- **Main color window** (frameless-ish, native traffic lights, transparent title bar)
-  - RGBA sliders + numeric fields + hex field (same track/thumb styling as the original CSS)
-  - A copy button next to the hex field (copies the hex code; its context menu offers
-    the RGB/RGBA variants)
-  - Background is the current color; text/controls switch light/dark like the original
-  - Window becomes see-through when alpha < 1
-  - Shading header with **tints / naturals / shades** — the exact same 3×22 swatches
-    as the Electron app (`ColorTools.swift` is a 1:1 port of `color.class.js`,
-    validated: 264/264 generated colors identical)
-  - Tools toolbar (configurable): pin to foreground, picker, colorsbook, shading,
-    random, focus mode, clipboard, settings
-  - Context menu with all original actions + a "Recent Colors" submenu (history)
-  - Window size/position, last color and history are persisted (debounced 300 ms,
-    like the original)
-- **Screen picker** (`⌘P`): borderless loupe that follows the mouse, shows the pixel
-  color under the cursor with a hex label, picks on click, cancels on right-click or
-  `Esc`. Realtime preview into the main window (optional). Uses ScreenCaptureKit
-  (`SCScreenshotManager`, macOS 15.2+) with a CoreGraphics fallback.
-- **Colorsbook**: categories + colors, add/delete via popups and context menus,
-  click previews in the main window, persisted.
-- **Settings**: toolset selection, "hide alpha slider" toggle, optional toolbar
-  separator, picker realtime toggle, colorsbook JSON export, reset to defaults,
-  about + update check against the GitHub Releases API of
-  [`ikoshura/colorpicker-macos`](https://github.com/ikoshura/colorpicker-macos/releases).
-- **Menu bar** with the exact same shortcuts as the Electron app
-  (`⇧⌘A`, `⌘,`, `⇧⌘C`, `⇧⌘B`, `⌘S`, `⌘W`, `⇧⌘W`, `⌘N`, `⌘F`, `⌘P`, `⇧⌘V`, `⌘T`, `⌘M`).
-- **Data migration**: on first launch, settings/colors/history are imported
-  automatically from the Electron app's
-  `~/Library/Application Support/colorpicker/storage/colorpicker.json`.
-
-## Deliberate differences
-
-- **Native window controls.** The Windows/Linux "fake buttons" option is gone —
-  a native macOS app uses real traffic lights. The Electron app's "colorfull app"
-  setting (which tinted those buttons with complementary colors) was removed too.
-- **Focus mode** keeps only the color and the focus-mode button (same as original).
-- **"Get Clipboard's Colors"** is actually implemented (in the Electron repo the
-  handler was referenced but never defined); it parses `#RGB`, `#RRGGBB`, `rgb()`
-  and `rgba()` from the clipboard.
-- **Touch Bar support** from the Electron version is not ported.
-- The macOS 14 fallback for pixel sampling uses the deprecated
-  `CGWindowListCreateImage`; on macOS 15.2+ ScreenCaptureKit is used.
-- The first time you use the picker you'll be asked for the **Screen Recording**
-  permission (System Settings → Privacy & Security → Screen Recording), exactly
-  like the Electron version needed it for robotjs.
-
-## Layout
-
-```
-native-macos/
-├── project.yml                  # XcodeGen project definition
-├── build.sh                     # generate + build
-└── Colorpicker/
-    ├── main.swift               # AppKit entry point
-    ├── AppDelegate.swift        # menu + lifecycle (ex-src/main.js)
-    ├── Models/
-    │   ├── ColorTools.swift     # ex-src/views/js/color.class.js
-    │   ├── AppColor.swift
-    │   └── StoredState.swift    # ex-src/storage.js (+ Electron migration)
-    ├── State/
-    │   └── AppState.swift       # ex-src/events/colorpicker.js
-    ├── Windows/                 # ex-src/browsers/*.js + events/picker.js
-    │   ├── MainColorpickerWindowController.swift
-    │   ├── ColorsbookWindowController.swift
-    │   ├── SettingsWindowController.swift
-    │   ├── PickerWindowController.swift
-    │   ├── PickerLoupe.swift
-    │   └── PixelSampler.swift
-    ├── Views/                   # ex-src/views/*.html + js
-    │   ├── ColorpickerView.swift
-    │   ├── ColorsbookView.swift
-    │   ├── SettingsView.swift
-    │   └── Components.swift
-    └── Update/
-        └── UpdateChecker.swift  # ex-src/checkUpdate.js
-```
+Original app by [Toinane](https://github.com/toinane). macOS port by [ikoshura](https://github.com/ikoshura).
