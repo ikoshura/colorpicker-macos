@@ -1,0 +1,425 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		0F745D0186AA8FDD7358B67E /* MainColorpickerWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E768DAB34643D33764BE216 /* MainColorpickerWindowController.swift */; };
+		0F76AFB75EDF2D20A7BDF898 /* ColorTools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18412C6754C8F387A96A432C /* ColorTools.swift */; };
+		5A3114EF4E6D75F896580A74 /* SettingsWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A620CCA88972B4B5E30F0C34 /* SettingsWindowController.swift */; };
+		6D3BF302102329A10518DBC1 /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D6EB57377C7DD159FD16CA9 /* AppState.swift */; };
+		6FF50B888A263877704A4DC9 /* PickerWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DAA4920D3ABEE4E65C9F60B /* PickerWindowController.swift */; };
+		7465038BEDDE99C0DDFE59AF /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EAF0F0A56E868D78766BDB1 /* SettingsView.swift */; };
+		8152C8CE3BE3341ECC5A27CD /* PixelSampler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4613A368596CD00B4D5DEFF /* PixelSampler.swift */; };
+		8902254735FB52D180458690 /* PickerLoupe.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF94BD9AB166791EF6D6C583 /* PickerLoupe.swift */; };
+		8FF341AD9253357D11A9E6AB /* ColorsbookView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26CD00CD9A443369F596B1DB /* ColorsbookView.swift */; };
+		A9BF216F7E2441EBC102E9AB /* AppColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCB3037B3D3E51A718D94B80 /* AppColor.swift */; };
+		B516B1D4C6B6F68BBFA3BAE8 /* StoredState.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF8B1A90E851821B16C6AB6 /* StoredState.swift */; };
+		B691447FDC20ECD62364C38D /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14B467DC1F5DBA28B12F5FDF /* main.swift */; };
+		C78F7A393D95819004D901F4 /* UpdateChecker.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2741E515206842327492BA5 /* UpdateChecker.swift */; };
+		CAB642A0B675DDE7D5561D72 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22B4F1DC1AE02F02795D6BD2 /* AppDelegate.swift */; };
+		D74011B2C4330F019FF87284 /* ColorsbookWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 197464C424D61222426E728A /* ColorsbookWindowController.swift */; };
+		E83159DB4A4CD5314D5742AA /* ColorpickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC8DBA9B52C3206D088226E /* ColorpickerView.swift */; };
+		EA9913D75B2B31D319E7E90F /* Components.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3439C1847625B795B41DE8E4 /* Components.swift */; };
+		F86B5D4A7F06E277811CB4D4 /* icon.icns in Resources */ = {isa = PBXBuildFile; fileRef = 78C2A9CC39F3EF5DE6CE47AB /* icon.icns */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		14B467DC1F5DBA28B12F5FDF /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		15011DE5872E91659BB5362C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		18412C6754C8F387A96A432C /* ColorTools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorTools.swift; sourceTree = "<group>"; };
+		197464C424D61222426E728A /* ColorsbookWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorsbookWindowController.swift; sourceTree = "<group>"; };
+		22B4F1DC1AE02F02795D6BD2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		2559E7DEB25EA1985C8BFEFC /* Colorpicker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Colorpicker.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		26CD00CD9A443369F596B1DB /* ColorsbookView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorsbookView.swift; sourceTree = "<group>"; };
+		2DAA4920D3ABEE4E65C9F60B /* PickerWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickerWindowController.swift; sourceTree = "<group>"; };
+		3439C1847625B795B41DE8E4 /* Components.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Components.swift; sourceTree = "<group>"; };
+		3D6EB57377C7DD159FD16CA9 /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
+		6E768DAB34643D33764BE216 /* MainColorpickerWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainColorpickerWindowController.swift; sourceTree = "<group>"; };
+		78C2A9CC39F3EF5DE6CE47AB /* icon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = icon.icns; sourceTree = "<group>"; };
+		9EAF0F0A56E868D78766BDB1 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		A4613A368596CD00B4D5DEFF /* PixelSampler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PixelSampler.swift; sourceTree = "<group>"; };
+		A620CCA88972B4B5E30F0C34 /* SettingsWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsWindowController.swift; sourceTree = "<group>"; };
+		AAF8B1A90E851821B16C6AB6 /* StoredState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoredState.swift; sourceTree = "<group>"; };
+		DF94BD9AB166791EF6D6C583 /* PickerLoupe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickerLoupe.swift; sourceTree = "<group>"; };
+		E2741E515206842327492BA5 /* UpdateChecker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateChecker.swift; sourceTree = "<group>"; };
+		FAC8DBA9B52C3206D088226E /* ColorpickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorpickerView.swift; sourceTree = "<group>"; };
+		FCB3037B3D3E51A718D94B80 /* AppColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppColor.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		4064E7019803B4F8F7E2281F /* Windows */ = {
+			isa = PBXGroup;
+			children = (
+				197464C424D61222426E728A /* ColorsbookWindowController.swift */,
+				6E768DAB34643D33764BE216 /* MainColorpickerWindowController.swift */,
+				DF94BD9AB166791EF6D6C583 /* PickerLoupe.swift */,
+				2DAA4920D3ABEE4E65C9F60B /* PickerWindowController.swift */,
+				A4613A368596CD00B4D5DEFF /* PixelSampler.swift */,
+				A620CCA88972B4B5E30F0C34 /* SettingsWindowController.swift */,
+			);
+			path = Windows;
+			sourceTree = "<group>";
+		};
+		4B87D885823A8C0C79D99470 /* Colorpicker */ = {
+			isa = PBXGroup;
+			children = (
+				22B4F1DC1AE02F02795D6BD2 /* AppDelegate.swift */,
+				15011DE5872E91659BB5362C /* Info.plist */,
+				14B467DC1F5DBA28B12F5FDF /* main.swift */,
+				B0633613885BCE33F58EC2F2 /* Models */,
+				ECE21815595F649A5C0B0CFB /* State */,
+				CD51A523E5BE3A82A6BF2FC6 /* Update */,
+				53CEA9841EAC21D1E65C245F /* Views */,
+				4064E7019803B4F8F7E2281F /* Windows */,
+			);
+			path = Colorpicker;
+			sourceTree = "<group>";
+		};
+		53CEA9841EAC21D1E65C245F /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				FAC8DBA9B52C3206D088226E /* ColorpickerView.swift */,
+				26CD00CD9A443369F596B1DB /* ColorsbookView.swift */,
+				3439C1847625B795B41DE8E4 /* Components.swift */,
+				9EAF0F0A56E868D78766BDB1 /* SettingsView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		6E765295A13CCEB95EBE48B1 /* colorpicker */ = {
+			isa = PBXGroup;
+			children = (
+				EF4F4A720ED5157C53B7A6BA /* build */,
+			);
+			name = colorpicker;
+			path = ..;
+			sourceTree = "<group>";
+		};
+		B0633613885BCE33F58EC2F2 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				FCB3037B3D3E51A718D94B80 /* AppColor.swift */,
+				18412C6754C8F387A96A432C /* ColorTools.swift */,
+				AAF8B1A90E851821B16C6AB6 /* StoredState.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		CC8463E49CB3B1151BB82207 = {
+			isa = PBXGroup;
+			children = (
+				4B87D885823A8C0C79D99470 /* Colorpicker */,
+				6E765295A13CCEB95EBE48B1 /* colorpicker */,
+				DCEDF1DB4FDE51A66566CAD3 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		CD51A523E5BE3A82A6BF2FC6 /* Update */ = {
+			isa = PBXGroup;
+			children = (
+				E2741E515206842327492BA5 /* UpdateChecker.swift */,
+			);
+			path = Update;
+			sourceTree = "<group>";
+		};
+		DCEDF1DB4FDE51A66566CAD3 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				2559E7DEB25EA1985C8BFEFC /* Colorpicker.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		ECE21815595F649A5C0B0CFB /* State */ = {
+			isa = PBXGroup;
+			children = (
+				3D6EB57377C7DD159FD16CA9 /* AppState.swift */,
+			);
+			path = State;
+			sourceTree = "<group>";
+		};
+		EF4F4A720ED5157C53B7A6BA /* build */ = {
+			isa = PBXGroup;
+			children = (
+				78C2A9CC39F3EF5DE6CE47AB /* icon.icns */,
+			);
+			path = build;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		BC97D0EAD906F82CB388A728 /* Colorpicker */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C76EB0FB5FFDB97ED5763373 /* Build configuration list for PBXNativeTarget "Colorpicker" */;
+			buildPhases = (
+				C12E37C4E882835FC2681A36 /* Sources */,
+				DA00F3A7D797941443771405 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Colorpicker;
+			packageProductDependencies = (
+			);
+			productName = Colorpicker;
+			productReference = 2559E7DEB25EA1985C8BFEFC /* Colorpicker.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		43091448E767AB932E594CE4 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+					BC97D0EAD906F82CB388A728 = {
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = 15CFDDB0E52C907766230954 /* Build configuration list for PBXProject "Colorpicker" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = CC8463E49CB3B1151BB82207;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = DCEDF1DB4FDE51A66566CAD3 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				BC97D0EAD906F82CB388A728 /* Colorpicker */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		DA00F3A7D797941443771405 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F86B5D4A7F06E277811CB4D4 /* icon.icns in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		C12E37C4E882835FC2681A36 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A9BF216F7E2441EBC102E9AB /* AppColor.swift in Sources */,
+				CAB642A0B675DDE7D5561D72 /* AppDelegate.swift in Sources */,
+				6D3BF302102329A10518DBC1 /* AppState.swift in Sources */,
+				0F76AFB75EDF2D20A7BDF898 /* ColorTools.swift in Sources */,
+				E83159DB4A4CD5314D5742AA /* ColorpickerView.swift in Sources */,
+				8FF341AD9253357D11A9E6AB /* ColorsbookView.swift in Sources */,
+				D74011B2C4330F019FF87284 /* ColorsbookWindowController.swift in Sources */,
+				EA9913D75B2B31D319E7E90F /* Components.swift in Sources */,
+				0F745D0186AA8FDD7358B67E /* MainColorpickerWindowController.swift in Sources */,
+				8902254735FB52D180458690 /* PickerLoupe.swift in Sources */,
+				6FF50B888A263877704A4DC9 /* PickerWindowController.swift in Sources */,
+				8152C8CE3BE3341ECC5A27CD /* PixelSampler.swift in Sources */,
+				7465038BEDDE99C0DDFE59AF /* SettingsView.swift in Sources */,
+				5A3114EF4E6D75F896580A74 /* SettingsWindowController.swift in Sources */,
+				B516B1D4C6B6F68BBFA3BAE8 /* StoredState.swift in Sources */,
+				C78F7A393D95819004D901F4 /* UpdateChecker.swift in Sources */,
+				B691447FDC20ECD62364C38D /* main.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		2106A034DD3B947BA785F501 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		7A03B1272521D2BDDF22CF37 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		D80B216BA4CE7CED8A8D96BD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CREATE_INFOPLIST_SECTION_IN_BINARY = NO;
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = Colorpicker/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "@executable_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.toinane.colorpicker;
+				PRODUCT_NAME = Colorpicker;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		DE00F8B1D6EAC77A8B71ECB1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CREATE_INFOPLIST_SECTION_IN_BINARY = NO;
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = Colorpicker/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "@executable_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.toinane.colorpicker;
+				PRODUCT_NAME = Colorpicker;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		15CFDDB0E52C907766230954 /* Build configuration list for PBXProject "Colorpicker" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7A03B1272521D2BDDF22CF37 /* Debug */,
+				2106A034DD3B947BA785F501 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		C76EB0FB5FFDB97ED5763373 /* Build configuration list for PBXNativeTarget "Colorpicker" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DE00F8B1D6EAC77A8B71ECB1 /* Debug */,
+				D80B216BA4CE7CED8A8D96BD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 43091448E767AB932E594CE4 /* Project object */;
+}

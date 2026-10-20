@@ -1,0 +1,30 @@
+name: Colorpicker
+options:
+  bundleIdPrefix: com.toinane
+  deploymentTarget:
+    macOS: "14.0"
+  createIntermediateGroups: true
+settings:
+  base:
+    SWIFT_VERSION: "5.0"
+    MACOSX_DEPLOYMENT_TARGET: "14.0"
+targets:
+  Colorpicker:
+    type: application
+    platform: macOS
+    sources:
+      - path: Colorpicker
+      - path: ../build/icon.icns
+        buildPhase: resources
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.toinane.colorpicker
+        PRODUCT_NAME: Colorpicker
+        CODE_SIGN_IDENTITY: "-"
+        CODE_SIGN_STYLE: Automatic
+        ENABLE_HARDENED_RUNTIME: YES
+        GENERATE_INFOPLIST_FILE: NO
+        INFOPLIST_FILE: Colorpicker/Info.plist
+        CREATE_INFOPLIST_SECTION_IN_BINARY: NO
+        LD_RUNPATH_SEARCH_PATHS: "@executable_path/../Frameworks"
+        COMBINE_HIDPI_IMAGES: YES
