@@ -14,15 +14,19 @@ final class SettingsWindowController: NSWindowController, NSWindowDelegate {
 
     private init() {
         let window = NSWindow(
-            contentRect: NSRect(x: 0, y: 0, width: 700, height: 500),
+            contentRect: NSRect(x: 0, y: 0, width: 540, height: 400),
             styleMask: [.titled, .closable, .miniaturizable, .resizable, .fullSizeContentView],
             backing: .buffered,
             defer: false)
 
         window.title = "Preferences"
+        window.titleVisibility = .hidden
         window.titlebarAppearsTransparent = true
         window.toolbarStyle = .unified
-        window.contentMinSize = NSSize(width: 460, height: 340)
+        // The content is short: the window must never shrink below the size
+        // that fits everything, otherwise the detail panel starts scrolling.
+        window.contentMinSize = NSSize(width: 520, height: 380)
+        window.setContentSize(NSSize(width: 540, height: 400))
         window.isReleasedWhenClosed = false
         // Not fullscreenable, like the Electron version.
         window.collectionBehavior.remove(.fullScreenPrimary)

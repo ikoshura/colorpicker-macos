@@ -36,50 +36,38 @@ struct SettingsView: View {
         }
     }
 
-    @State private var tab: Tab = .general
+    @State private var tab: Tab? = .general
 
     var body: some View {
-        HStack(spacing: 0) {
-            tabBar
-            Divider()
+        NavigationSplitView {
+            sidebar
+        } detail: {
             panel
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-                .padding(28)
+                .padding(20)
         }
-        .frame(minWidth: 460, minHeight: 340)
+        .navigationSplitViewStyle(.balanced)
+        .frame(minWidth: 520, minHeight: 380)
     }
 
-    private var tabBar: some View {
-        VStack(alignment: .leading, spacing: 2) {
+    /// Native sidebar (backed by an `NSSplitViewController`): it gets the
+    /// system vibrancy / Liquid Glass treatment and a divider that always
+    /// spans the full height of the window.
+    private var sidebar: some View {
+        List(selection: $tab) {
             ForEach(Tab.allCases) { item in
-                Button {
-                    tab = item
-                } label: {
-                    HStack {
-                        Image(systemName: item.icon)
-                            .frame(width: 20)
-                        Text(item.title)
-                    }
-                    .font(.system(size: 13))
-                    .padding(.horizontal, 10)
-                    .padding(.vertical, 6)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .background(
-                        RoundedRectangle(cornerRadius: 6)
-                            .fill(tab == item ? Color.accentColor.opacity(0.2) : .clear))
+                NavigationLink(value: item) {
+                    Label(item.title, systemImage: item.icon)
                 }
-                .buttonStyle(.plain)
             }
-            Spacer()
         }
-        .frame(width: 160)
-        .padding(10)
-        .background(Color(nsColor: .underPageBackgroundColor))
+        .listStyle(.sidebar)
+        .navigationSplitViewColumnWidth(min: 150, ideal: 180, max: 240)
     }
 
     @ViewBuilder
     private var panel: some View {
-        switch tab {
+        switch tab ?? .general {
         case .general: generalPanel
         case .colorpicker: colorpickerPanel
         case .picker: pickerPanel
@@ -91,22 +79,24 @@ struct SettingsView: View {
     // MARK: - General
 
     private var generalPanel: some View {
-        ScrollView {
-            VStack(alignment: .leading, spacing: 14) {
-                Text("Colorpicker Tools").font(.headline)
-                Text("Choose the tools shown in the toolbar.")
-                    .font(.subheadline)
-                    .foregroundStyle(.secondary)
-                ForEach(ToolItem.all) { tool in
-                    Toggle(isOn: toolBinding(tool.id)) {
-                        Label(tool.title, systemImage: tool.icon)
-                    }
+        VStack(alignment: .leading, spacing: 8) {
+            Text("Colorpicker Tools").font(.headline)
+            Text("Choose the tools shown in the toolbar.")
+                .font(.caption)
+                .foregroundStyle(.secondary)
+            ForEach(ToolItem.all) { tool in
+                Toggle(isOn: toolBinding(tool.id)) {
+                    Label(tool.title, systemImage: tool.icon)
                 }
-                Divider()
-                Text("Preferences").font(.headline)
-                Button("Reset Colorpicker") { resetPreferences() }
-                    .foregroundStyle(.red)
+                .toggleStyle(.checkbox)
+                .font(.callout)
             }
+            Divider().padding(.vertical, 2)
+            Button("Reset Colorpicker") { resetPreferences() }
+                .foregroundStyle(.red)
+                .font(.callout)
+                .controlSize(.small)
+            Spacer(minLength: 0)
         }
     }
 
@@ -153,42 +143,40 @@ struct SettingsView: View {
     // MARK: - Colorpicker
 
     private var colorpickerPanel: some View {
-        VStack(alignment: .leading, spacing: 14) {
+        VStack(alignment: .leading, spacing: 8) {
             Text("Appearance").font(.headline)
             Toggle("Show complementary colors in OSX Icons", isOn: $state.colorfullApp)
-            Text("""
-            Tints the close, minimize and zoom buttons with colors \
-            complementary to the current color.
-            """)
-            .font(.subheadline)
-            .foregroundStyle(.secondary)
-            Spacer()
+            Text("Tints the close, minimize and zoom buttons with colors complementary to the current color.")
+                .font(.caption)
+                .foregroundStyle(.secondary)
+            Spacer(minLength: 0)
         }
     }
 
     // MARK: - Picker
 
     private var pickerPanel: some View {
-        VStack(alignment: .leading, spacing: 14) {
+        VStack(alignment: .leading, spacing: 8) {
             Text("Options").font(.headline)
             Toggle("Show color in realtime", isOn: $state.pickerRealtime)
             Text("While picking, the main window previews the color under the cursor.")
-                .font(.subheadline)
+                .font(.caption)
                 .foregroundStyle(.secondary)
-            Spacer()
+            Spacer(minLength: 0)
         }
     }
 
     // MARK: - Colorsbook
 
     private var colorsbookPanel: some View {
-        VStack(alignment: .leading, spacing: 14) {
+        VStack(alignment: .leading, spacing: 8) {
             Text("Colorsbook").font(.headline)
             Text("Export your colors as JSON.")
-                .font(.subheadline)
+                .font(.caption)
                 .foregroundStyle(.secondary)
             Button("Export…") { exportColorsbook() }
-            Spacer()
+                .controlSize(.small)
+            Spacer(minLength: 0)
         }
     }
 
@@ -210,7 +198,7 @@ struct SettingsView: View {
     // MARK: - About
 
     private var aboutPanel: some View {
-        VStack(alignment: .leading, spacing: 14) {
+        VStack(alignment: .leading, spacing: 8) {
             Text("Update").font(.headline)
             HStack(spacing: 8) {
                 if updateState == nil {
@@ -228,9 +216,9 @@ struct SettingsView: View {
                     Text("You're up to date!")
                 }
             }
-            .font(.system(size: 13))
+            .font(.callout)
 
-            Divider()
+            Divider().padding(.vertical, 2)
 
             Text("About").font(.headline)
             Text("Colorpicker - version \(UpdateChecker.currentVersion)")
@@ -243,7 +231,8 @@ struct SettingsView: View {
             Button("Website") {
                 NSWorkspace.shared.open(URL(string: "https://colorpicker.fr")!)
             }
-            Spacer()
+            .controlSize(.small)
+            Spacer(minLength: 0)
         }
         .task {
             updateState = await UpdateChecker.check()

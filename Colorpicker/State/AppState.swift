@@ -215,17 +215,18 @@ final class AppState: ObservableObject {
     /// Grows the window when shading is activated — and restores the exact
     /// size it had before when shading is deactivated again.
     ///
-    /// Content is laid out to an exact fit (220 with shading, 156 without).
-    /// The window only ever grows to fit the header — never shrinks — so a
-    /// window you resized stays the size you left it. While shaded the height
-    /// is locked; the width stays freely resizable at all times.
+    /// On activation the window only ever GROWS to fit the header, so a window
+    /// you already made taller is never forced smaller. On deactivation the
+    /// height it had before the toggle is restored, so the header's space is
+    /// given back. The width is never touched — it stays freely resizable.
     func updateShadingConstraintsIfNeeded() {
         guard let window = mainWindow else { return }
 
         let growHeight: CGFloat = 220
-        let shadeFloor: CGFloat = 156
+        let restFloor: CGFloat = 150
 
         if shadingActive {
+            // Remember the height BEFORE the header appears.
             sizeBeforeShading = window.frame.size
             window.styleMask.remove(.resizable)
             let height = max(window.frame.height, growHeight)
@@ -233,12 +234,16 @@ final class AppState: ObservableObject {
             window.contentMinSize = NSSize(width: 440, height: height)
             window.minSize = NSSize(width: 440, height: height)
         } else {
-            // Locked while shaded, so this is a fixed, known height — just
-            // leave the window where it is. Your size comes back untouched.
+            // Give the header's space back: restore the height from before the
+            // toggle. The width stays as-is (the user may have resized it).
+            let previous = sizeBeforeShading
             sizeBeforeShading = nil
             window.styleMask.insert(.resizable)
-            window.contentMinSize = NSSize(width: 440, height: shadeFloor)
-            window.minSize = NSSize(width: 440, height: shadeFloor)
+            window.contentMinSize = NSSize(width: 440, height: restFloor)
+            window.minSize = NSSize(width: 440, height: restFloor)
+            if let previous {
+                setWindowHeight(window, max(previous.height, restFloor))
+            }
         }
     }
 

@@ -233,7 +233,8 @@ struct ColorpickerView: View {
         TextField("", text: text)
             .textFieldStyle(.plain)
             .multilineTextAlignment(.center)
-            .font(.system(size: fontSize, weight: field == .hex ? .semibold : .regular))
+            // Same weight as the hex field so every number reads the same.
+            .font(.system(size: fontSize, weight: .semibold))
             .foregroundStyle(fg)
             .focused($focusedField, equals: field)
             .frame(width: width, height: 22)

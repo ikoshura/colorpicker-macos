@@ -15,6 +15,10 @@ final class ColorsbookWindowController: NSWindowController, NSWindowDelegate {
     private init() {
         let window = NSWindow(
             contentRect: NSRect(x: 0, y: 0, width: 365, height: 400),
+            // `.fullSizeContentView` makes the sidebar's material extend up
+            // behind the title bar, so the translucency is continuous from
+            // the top of the window to the bottom of the column (the same
+            // treatment the Preferences window uses).
             styleMask: [.titled, .closable, .miniaturizable, .resizable, .fullSizeContentView],
             backing: .buffered,
             defer: false)
