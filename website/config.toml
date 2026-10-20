@@ -11,7 +11,7 @@ compile_sass = true
 generate_feeds = false
 
 [extra]
-favicon = "favicon.svg"
+favicon = "icon.png"
 
 [[extra.nav]]
 text = "Home"

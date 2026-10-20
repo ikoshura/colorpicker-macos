@@ -6,13 +6,14 @@
   <title>{% block title %}{{ config.title }}{% endblock title %}</title>
   <meta name="description" content="{% block description %}{{ config.description }}{% endblock description %}" />
   <link rel="stylesheet" href="{{ get_url(path='style.css') }}" />
-  {% if config.extra.favicon %}<link rel="icon" href="{{ get_url(path=config.extra.favicon) }}" />{% endif %}
+  <link rel="icon" href="{{ get_url(path=config.extra.favicon) }}" type="image/png" />
+  <link rel="apple-touch-icon" href="{{ get_url(path='icon.png') }}" />
 </head>
 <body>
   <div class="wrap">
     <header class="site-header">
       <a class="brand" href="{{ get_url(path='') }}">
-        <span class="swatch"></span>
+        <img class="logo" src="{{ get_url(path='logo.svg') }}" alt="" width="32" height="32" />
         <span>Colorpicker</span>
       </a>
       <nav>

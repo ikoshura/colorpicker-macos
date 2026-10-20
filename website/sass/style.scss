@@ -36,7 +36,7 @@ body {
     text-decoration: none;
     font-size: 0.9rem;
 
-    &:hover { color: $accent-bright; }
+    &:hover { color: $text; }
   }
 }
 
@@ -44,60 +44,69 @@ body {
   display: flex;
   align-items: center;
   gap: 0.6rem;
-  font-weight: 650;
+  font-weight: 600;
   color: $text !important;
   text-decoration: none !important;
   letter-spacing: -0.01em;
 }
 
-.swatch {
-  width: 1.05rem;
-  height: 1.05rem;
-  border-radius: 5px;
-  background: linear-gradient(135deg, $accent, $accent-bright);
+.logo {
+  display: block;
 }
 
 .hero {
-  padding: 3.5rem 0 2.5rem;
+  padding: 3rem 0 2rem;
+  text-align: center;
+
+  .screenshot {
+    display: block;
+    margin: 0 auto 1.5rem;
+    border: 1px solid $border;
+    border-radius: $radius;
+  }
 
   h1 {
     margin: 0 0 0.75rem;
-    font-size: 2.6rem;
-    letter-spacing: -0.03em;
+    font-size: 2rem;
+    letter-spacing: -0.02em;
   }
 }
 
 .lead {
-  margin: 0 0 1.75rem;
+  margin: 0 0 1.5rem;
   color: $text-dim;
   font-size: 1.1rem;
   max-width: 42rem;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .cta {
   display: flex;
+  justify-content: center;
   flex-wrap: wrap;
   gap: 0.75rem;
+  margin-bottom: 2rem;
 }
 
 .button {
   display: inline-block;
   padding: 0.6rem 1.25rem;
-  border-radius: 9px;
-  background: $accent;
-  color: #08131a;
+  border-radius: $radius;
+  background: $text;
+  color: #fff;
   font-weight: 600;
   font-size: 0.95rem;
   text-decoration: none;
 
-  &:hover { background: $accent-bright; }
+  &:hover { background: #000; }
 
   &.ghost {
     background: transparent;
     border: 1px solid $border;
     color: $text;
 
-    &:hover { border-color: $accent; }
+    &:hover { background: $bg-soft; border-color: $border; }
   }
 }
 
@@ -129,14 +138,14 @@ section {
 
     &::before {
       content: "✓";
-      color: $accent-bright;
+      color: $text;
       margin-right: 0.55rem;
       font-weight: 700;
     }
   }
 }
 
-a { color: $accent-bright; }
+a { color: $text; }
 
 .site-footer {
   margin-top: 4rem;
