@@ -27,7 +27,9 @@ struct ColorpickerView: View {
 
     /// Layout metrics for the current alpha-visibility setting.
     private var metrics: LayoutMetrics {
-        LayoutMetrics(showAlpha: state.showAlphaSlider)
+        LayoutMetrics(
+            showAlpha: state.showAlphaSlider,
+            showSeparator: state.showToolbarSeparator)
     }
 
     var body: some View {
@@ -399,8 +401,9 @@ struct ColorpickerView: View {
             }
         }
         // 26pt buttons starting 6pt from the top centers them at ~19pt,
-        // which lines up with the traffic lights.
-        .padding(.top, 6)
+        // which lines up with the traffic lights. Without the alpha slider
+        // the band is a touch shorter, so the buttons start 2pt higher.
+        .padding(.top, metrics.showAlpha ? 6 : 4)
         .padding(.trailing, 12)
         .frame(maxWidth: .infinity, alignment: .topTrailing)
     }

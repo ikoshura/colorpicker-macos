@@ -20,6 +20,9 @@ import SwiftUI
 ///   the roomier, more comfortable spacing of the original app.
 struct LayoutMetrics {
     let showAlpha: Bool
+    /// Whether the hairline under the toolbar is drawn. It changes how
+    /// much air sits between the toolbar band and the controls.
+    let showSeparator: Bool
 
     /// Number of slider/field rows (RGB + optional alpha).
     var rowCount: Int { showAlpha ? 4 : 3 }
@@ -30,10 +33,23 @@ struct LayoutMetrics {
     var rowSpacing: CGFloat { showAlpha ? 5 : 9 }
     /// Height of the toolbar band: the system traffic lights and the tool
     /// buttons sit inline in it.
-    var toolbarHeight: CGFloat { 32 }
-    /// Space reserved above the controls for the toolbar row. It clears the
-    /// toolbar band and leaves a little air below it.
-    var topPadding: CGFloat { toolbarHeight + (showAlpha ? 2 : 6) }
+    var toolbarHeight: CGFloat { showAlpha ? 32 : 30 }
+    /// Space reserved above the controls for the toolbar row. It always
+    /// clears the toolbar band first.
+    ///
+    /// With the separator on, the hairline needs room of its own, so a
+    /// little air is left between it and the controls. Without it there is
+    /// no divider to space out from, so the controls move up and the view
+    /// stays tight instead of showing a band of dead space.
+    var topPadding: CGFloat {
+        let gap: CGFloat
+        if showSeparator {
+            gap = showAlpha ? 6 : 8
+        } else {
+            gap = 0
+        }
+        return toolbarHeight + gap
+    }
     /// Space below the controls.
     var bottomPadding: CGFloat { showAlpha ? 6 : 6 }
     /// Horizontal padding around the whole control block.

@@ -51,6 +51,9 @@ final class AppState: ObservableObject {
         didSet {
             guard showToolbarSeparator != oldValue else { return }
             persistSoon()
+            // The separator changes the space above the controls, so the
+            // window's height floor moves with it.
+            updateMinimumHeight()
         }
     }
     // Settings (picker section)
@@ -359,7 +362,9 @@ final class AppState: ObservableObject {
     /// Smallest height the main window may take, based on the current
     /// alpha-visibility setting.
     var minimumHeight: CGFloat {
-        LayoutMetrics(showAlpha: showAlphaSlider).minimumHeight
+        LayoutMetrics(
+            showAlpha: showAlphaSlider,
+            showSeparator: showToolbarSeparator).minimumHeight
     }
 
     var storedFrame: NSRect? {
