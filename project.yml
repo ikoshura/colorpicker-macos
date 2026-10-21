@@ -18,7 +18,7 @@ targets:
         buildPhase: resources
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.toinane.colorpicker
+        PRODUCT_BUNDLE_IDENTIFIER: com.ikoshura.colorpicker
         PRODUCT_NAME: Colorpicker
         CODE_SIGN_IDENTITY: "-"
         CODE_SIGN_STYLE: Automatic

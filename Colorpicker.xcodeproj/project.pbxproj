@@ -40,6 +40,7 @@
 		3D6EB57377C7DD159FD16CA9 /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
 		6E768DAB34643D33764BE216 /* MainColorpickerWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainColorpickerWindowController.swift; sourceTree = "<group>"; };
 		78C2A9CC39F3EF5DE6CE47AB /* icon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = icon.icns; sourceTree = "<group>"; };
+		93E08FA647A46C50CE2A4266 /* Colorpicker.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Colorpicker.entitlements; sourceTree = "<group>"; };
 		9EAF0F0A56E868D78766BDB1 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		A4613A368596CD00B4D5DEFF /* PixelSampler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PixelSampler.swift; sourceTree = "<group>"; };
 		A620CCA88972B4B5E30F0C34 /* SettingsWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsWindowController.swift; sourceTree = "<group>"; };
@@ -68,6 +69,7 @@
 			isa = PBXGroup;
 			children = (
 				22B4F1DC1AE02F02795D6BD2 /* AppDelegate.swift */,
+				93E08FA647A46C50CE2A4266 /* Colorpicker.entitlements */,
 				15011DE5872E91659BB5362C /* Info.plist */,
 				14B467DC1F5DBA28B12F5FDF /* main.swift */,
 				B0633613885BCE33F58EC2F2 /* Models */,
@@ -374,7 +376,7 @@
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = Colorpicker/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.toinane.colorpicker;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ikoshura.colorpicker;
 				PRODUCT_NAME = Colorpicker;
 				SDKROOT = macosx;
 			};
@@ -392,7 +394,7 @@
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = Colorpicker/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.toinane.colorpicker;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ikoshura.colorpicker;
 				PRODUCT_NAME = Colorpicker;
 				SDKROOT = macosx;
 			};
