@@ -1,6 +1,6 @@
 # Colorpicker for macOS
 
-<img src="https://github.com/user-attachments/assets/69456df7-fc1c-4bbe-a745-fab9e63884e5" width="320" alt="Colorpicker screenshot" />
+<img src="https://github.com/user-attachments/assets/69456df7-fc1c-4bbe-a745-fab9e63884e5" width="540" alt="Colorpicker screenshot" />
 
 A small, native macOS color picker. It's a Swift rewrite of the Electron app [Colorpicker](https://github.com/toinane/colorpicker) by [Toinane](https://github.com/toinane), with no Electron or Node, just a tiny `.app`.
 
@@ -8,6 +8,7 @@ Website: <https://ikoshura.github.io/colorpicker-macos>
 
 ## Features
 
+- **Tiny:** only 618 KB, compared to 96.6 MB for the original [Toinane/colorpicker](https://github.com/toinane/colorpicker)
 - Pick any color on screen with `⌘P`
 - Adjust color with RGBA sliders, number fields, or a hex field
 - Copy as hex, RGB, or RGBA
