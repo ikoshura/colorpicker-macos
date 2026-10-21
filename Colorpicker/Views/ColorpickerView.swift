@@ -284,19 +284,27 @@ struct ColorpickerView: View {
                 .focused($focusedField, equals: .hex)
                 .frame(maxWidth: .infinity)
                 .onChange(of: hexText) { _, value in
-                    let body = value.filter { $0 != "#" }
-                    // Do NOT reassign hexText here: mutating the bound value
-                    // from within its own onChange resets the text cursor to
-                    // the end on every keystroke. Only push the color to the
-                    // model when we have a complete, valid six-digit hex.
-                    if body.count == 6, body.allSatisfy({ $0.isHexDigit }) {
-                        state.setColor(hex: "#" + body.uppercased())
+                    // Never reassign hexText while typing — that resets the
+                    // text cursor. Only push the color when a complete valid
+                    // six-digit hex is present.
+                    let digits = value.filter { $0.isHexDigit }
+                    if digits.count == 6 {
+                        state.setColor(hex: "#" + digits.uppercased())
                     }
                 }
                 .onSubmit {
-                    let body = hexText.filter { $0 != "#" }
-                    guard body.count == 6, body.allSatisfy({ $0.isHexDigit }) else { return }
-                    hexText = "#" + body.uppercased()
+                    // Normalize whatever was typed: keep only hex digits,
+                    // pad short input by repeating cyclically to six digits,
+                    // uppercase, and add the '#' prefix.
+                    let digits = hexText.filter { $0.isHexDigit }
+                    guard !digits.isEmpty else { return }
+                    let chars = Array(digits)
+                    let padded = (0..<6).map { String(chars[$0 % chars.count]) }.joined()
+                    let normalized = "#" + padded.uppercased()
+                    hexText = normalized
+                    if digits.count == 6 {
+                        state.setColor(hex: normalized)
+                    }
                     focusedField = nil
                 }
                 .onKeyPress(.upArrow) {
