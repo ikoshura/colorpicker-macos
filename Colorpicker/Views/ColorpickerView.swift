@@ -142,12 +142,6 @@ struct ColorpickerView: View {
         state.setRGB(rgb)
     }
 
-    private func parseHex(_ text: String) {
-        let body = text.hasPrefix("#") ? String(text.dropFirst()) : text
-        guard body.count == 6, body.allSatisfy({ $0.isHexDigit }) else { return }
-        state.setColor(hex: "#" + body)
-    }
-
     private func parseAlpha(_ text: String) {
         if text == "0." || text == "1." { return }
         guard let value = Double(text) else { return }
@@ -291,11 +285,20 @@ struct ColorpickerView: View {
                 .frame(maxWidth: .infinity)
                 .onChange(of: hexText) { _, value in
                     let body = value.filter { $0 != "#" }
-                    let filtered = "#" + String(body.uppercased().prefix(6))
-                    if filtered != value { hexText = filtered }
-                    parseHex(filtered)
+                    // Do NOT reassign hexText here: mutating the bound value
+                    // from within its own onChange resets the text cursor to
+                    // the end on every keystroke. Only push the color to the
+                    // model when we have a complete, valid six-digit hex.
+                    if body.count == 6, body.allSatisfy({ $0.isHexDigit }) {
+                        state.setColor(hex: "#" + body.uppercased())
+                    }
                 }
-                .onSubmit { focusedField = nil }
+                .onSubmit {
+                    let body = hexText.filter { $0 != "#" }
+                    guard body.count == 6, body.allSatisfy({ $0.isHexDigit }) else { return }
+                    hexText = "#" + body.uppercased()
+                    focusedField = nil
+                }
                 .onKeyPress(.upArrow) {
                     adjustAllChannels(by: 1)
                     return .handled
