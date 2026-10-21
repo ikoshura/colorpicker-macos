@@ -1,6 +1,6 @@
 # Colorpicker for macOS
 
-<img src="https://github.com/user-attachments/assets/69456df7-fc1c-4bbe-a745-fab9e63884e5" width="540" alt="Colorpicker screenshot" />
+<img src="https://github.com/user-attachments/assets/69456df7-fc1c-4bbe-a745-fab9e63884e5" width="400" alt="Colorpicker screenshot" />
 
 A small, native macOS color picker. It's a Swift rewrite of the Electron app [Colorpicker](https://github.com/toinane/colorpicker) by [Toinane](https://github.com/toinane), with no Electron or Node, just a tiny `.app`.
 
