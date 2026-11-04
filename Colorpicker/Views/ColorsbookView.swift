@@ -167,8 +167,9 @@ struct ColorsbookView: View {
                 RoundedRectangle(cornerRadius: 4)
                     .strokeBorder(Color.black.opacity(0.15), lineWidth: 1))
             .contentShape(Rectangle())
-            // Like the original: a click previews the color in the main window.
-            .onTapGesture { state.setColor(hex: hex, persist: false) }
+            // A click applies the color in the main window and remembers it
+            // as the latest color (restored on relaunch).
+            .onTapGesture { state.setColor(hex: hex) }
             .contextMenu {
                 Button("Delete") {
                     if let category = currentCategory {

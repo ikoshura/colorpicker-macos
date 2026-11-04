@@ -19,6 +19,12 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         true
     }
 
+    func applicationWillTerminate(_ notification: Notification) {
+        // Flush any pending debounced write so the latest color is still
+        // restored on the next launch after a quick quit.
+        AppState.shared.persistNow()
+    }
+
     private func buildMenu() {
         let mainMenu = NSMenu()
         let version = UpdateChecker.currentVersion

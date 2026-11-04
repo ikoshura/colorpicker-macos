@@ -112,6 +112,12 @@ final class AppState: ObservableObject {
         if normalized == color.hex && color.alpha == 1 { return }
 
         if persist {
+            // Remember the latest color immediately (in memory) and schedule
+            // the disk write. History stays debounced below. A terminate
+            // flush (AppDelegate.applicationWillTerminate) guarantees the
+            // pending write isn't lost on a quick quit.
+            state.colorpicker.lastColor = normalized
+            persistSoon()
             colorSaveTimer?.invalidate()
             let target = normalized
             colorSaveTimer = Timer.scheduledTimer(withTimeInterval: 0.3, repeats: false) { [weak self] _ in
